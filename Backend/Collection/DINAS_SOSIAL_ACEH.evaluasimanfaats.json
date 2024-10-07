@@ -1,0 +1,15 @@
+[{
+  "_id": {
+    "$oid": "66f30f6e227b4054739cca7b"
+  },
+  "statusBantuan": "Tetap",
+  "namaPendamping": "Humas",
+  "pekerjaanPendamping": "Pekerja Sosial",
+  "createdAt": {
+    "$date": "2024-09-24T19:13:50.374Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T19:13:50.374Z"
+  },
+  "__v": 0
+}]

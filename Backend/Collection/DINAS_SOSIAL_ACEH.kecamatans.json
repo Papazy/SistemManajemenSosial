@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "6701636f2d8e63b61c289226"
+  },
+  "name": "Longkib",
+  "kabupaten": {
+    "$oid": "6701636f2d8e63b61c28921b"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6701636f2d8e63b61c289229"
+  },
+  "name": "Penanggalan",
+  "kabupaten": {
+    "$oid": "6701636f2d8e63b61c28921b"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6701636f2d8e63b61c28922c"
+  },
+  "name": "Rundeng",
+  "kabupaten": {
+    "$oid": "6701636f2d8e63b61c28921b"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6701636f2d8e63b61c28922f"
+  },
+  "name": "Simpang Kiri",
+  "kabupaten": {
+    "$oid": "6701636f2d8e63b61c28921b"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6701636f2d8e63b61c289232"
+  },
+  "name": "Sultan Daulat",
+  "kabupaten": {
+    "$oid": "6701636f2d8e63b61c28921b"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6701671a16a7da6bec500447"
+  },
+  "name": "Simpang Kiri",
+  "kabupaten": {
+    "$oid": "6701636f2d8e63b61c2891f5"
+  },
+  "__v": 0
+}]

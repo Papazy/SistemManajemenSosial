@@ -1,0 +1,17 @@
+[{
+  "_id": {
+    "$oid": "66f2ed252e69b58915e11ffb"
+  },
+  "tahun": 2040,
+  "jumlahBantuan": 4000000,
+  "sumberDana": "APBN",
+  "status": "rejected",
+  "keterangan": "",
+  "createdAt": {
+    "$date": "2024-09-24T16:47:33.544Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T17:57:54.997Z"
+  },
+  "__v": 0
+}]

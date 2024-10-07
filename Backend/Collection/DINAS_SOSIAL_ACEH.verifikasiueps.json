@@ -1,0 +1,102 @@
+[{
+  "_id": {
+    "$oid": "66f2ea6d4bf7462ed57fefcc"
+  },
+  "tahun": 2030,
+  "jumlahBantuan": 5000000,
+  "sumberDana": "APBA",
+  "status": "approved",
+  "keterangan": "",
+  "createdAt": {
+    "$date": "2024-09-24T16:35:57.648Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T18:03:54.394Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f2eb004652e37146c61758"
+  },
+  "tahun": 2024,
+  "jumlahBantuan": 100000,
+  "sumberDana": "APBA",
+  "status": "approved",
+  "keterangan": "",
+  "createdAt": {
+    "$date": "2024-09-24T16:38:24.386Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T16:38:24.386Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f2ecbe2e69b58915e11ff7"
+  },
+  "tahun": 2024,
+  "jumlahBantuan": 100000,
+  "sumberDana": "APBA",
+  "status": "approved",
+  "keterangan": "",
+  "createdAt": {
+    "$date": "2024-09-24T16:45:50.333Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T16:45:50.333Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f2ef9aa1bbafc919eb10ab"
+  },
+  "tahun": 2024,
+  "jumlahBantuan": 100000,
+  "sumberDana": "APBA",
+  "status": "approved",
+  "keterangan": "",
+  "createdAt": {
+    "$date": "2024-09-24T16:58:02.109Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T16:58:02.109Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f2f8e75c842efba1b4076a"
+  },
+  "tahun": 2024,
+  "jumlahBantuan": 100000,
+  "sumberDana": "APBA",
+  "status": "approved",
+  "keterangan": "",
+  "createdAt": {
+    "$date": "2024-09-24T17:37:43.012Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T17:37:43.012Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f2f9779fd4b2524600cf6c"
+  },
+  "tahun": 2024,
+  "jumlahBantuan": 100000,
+  "sumberDana": "APBA",
+  "status": "approved",
+  "keterangan": "",
+  "createdAt": {
+    "$date": "2024-09-24T17:40:07.673Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T17:40:07.673Z"
+  },
+  "__v": 0
+}]

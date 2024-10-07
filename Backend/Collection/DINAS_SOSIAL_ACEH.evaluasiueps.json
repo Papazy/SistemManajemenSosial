@@ -1,0 +1,15 @@
+[{
+  "_id": {
+    "$oid": "66f30c467a480c414462f103"
+  },
+  "statusBantuan": "Tetap",
+  "namaPendamping": "John Doe",
+  "pekerjaanPendamping": "Pekerja Sosial",
+  "createdAt": {
+    "$date": "2024-09-24T19:00:22.179Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T19:00:22.179Z"
+  },
+  "__v": 0
+}]

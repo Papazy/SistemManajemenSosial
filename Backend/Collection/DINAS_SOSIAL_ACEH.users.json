@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "66e9be394f06af8a6adc64b4"
+  },
+  "fullName": "KKP",
+  "email": "KP@gmail.com",
+  "password": "$2b$10$ctbF0rd9JoibZ4RCFfJsJOZZcACifBtVs93L1FMnoF.Pf1Uvp1hKe",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66e9bec04f06af8a6adc64b8"
+  },
+  "fullName": "DINAS SOSIAL",
+  "email": "admin@gmail.com",
+  "password": "$2b$10$Y0bN5mAtojrdDEyAF8my/O3e7YNEU.OcIIgkrVt027lbsfSgzYBmm",
+  "__v": 0
+}]
