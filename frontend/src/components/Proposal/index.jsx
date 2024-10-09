@@ -8,6 +8,7 @@ import DetailDataProposal from './config/detail';
 import EditRoutes from './config/edit';
 import VerifikasiUEP from './verifikasi/UEP';
 import EvaluasiFormUEP from './evaluasi/UEP';
+import TableManfaat from './list/Manfaat';
 
 function ProposalRoutes() {
   const breadcrumbItems = [
@@ -19,6 +20,7 @@ function ProposalRoutes() {
       <Route path="/" element={<Proposal breadcrumbItems={breadcrumbItems} />} />
       <Route path="/kube" element={<TableLayout breadcrumbItems={breadcrumbItems} tipe={"kube"} />} />
       <Route path="/uep" element={<TableUEP breadcrumbItems={breadcrumbItems} tipe={"uep"} />} />
+      <Route path="/manfaat" element={<TableManfaat breadcrumbItems={breadcrumbItems} tipe={"manfaat"} />} />
       <Route path="/:tipe/detail/:id" element={<DetailDataProposal breadcrumbItems={breadcrumbItems} tipe={"uep"} />} />
       <Route path="/:tipe/verifikasi/:id" element={<VerifikasiUEP breadcrumbItems={breadcrumbItems} tipe={"uep"} />} />
       <Route path="/:tipe/evaluasi/:id" element={<EvaluasiFormUEP breadcrumbItems={breadcrumbItems} tipe={"uep"} />} />

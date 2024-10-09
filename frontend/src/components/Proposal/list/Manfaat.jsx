@@ -15,7 +15,7 @@ import { CiViewList } from "react-icons/ci";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 
-const TableUEP = ({ jenis = "ppks", tipe }) => {
+const TableManfaat = ({ jenis = "ppks", tipe }) => {
   const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
@@ -34,10 +34,10 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
   useEffect(() => {
     const fetchTypes = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/uep/getall-uep`
+        `${process.env.REACT_APP_API_URL}/manfaat/getall`
       );
       const responseData = await response.json();
-      const data = responseData.ueps;
+      const data = responseData.manfaatList;
       setRawData(data);
       console.log("Raw ", data);
     };
@@ -47,7 +47,7 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
   useEffect(() => {
     const fetchTypes = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/verifikasi/Uep/verifikasi`
+        `${process.env.REACT_APP_API_URL}/verifikasi/Manfaat/verifikasi`
       );
       const responseData = await response.json();
       const data = responseData.data;
@@ -60,7 +60,7 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
   useEffect(() => {
     const fetchTypes = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/evaluasi/Uep/getall-eval`
+        `${process.env.REACT_APP_API_URL}/evaluasi/Manfaat/getall-eval`
       );
       const responseData = await response.json();
       const data = responseData.data;
@@ -84,6 +84,7 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
         jumlahBantuan: verifikasi?.jumlahBantuan || "-",
         tahun: verifikasi?.tahun || "-",
         status: verifikasi?.status || "-",
+        keterangan: verifikasi?.keterangan || "-",
       };
     });
     setTableData(combinedData);
@@ -105,7 +106,7 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
         header: "Config",
         cell: function Cell(info) {
           const [isShow, setIsShow] = useState(false);
-
+  
           // Fungsi untuk menangani aksi edit, hapus, detail
           const handleAction = (action) => {
             if (action === "edit") {
@@ -117,7 +118,7 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
             }
             setIsShow(false); // Tutup menu setelah aksi
           };
-
+  
           // Fungsi untuk mendeteksi klik di luar menu
           useEffect(() => {
             const handleOutsideClick = (e) => {
@@ -130,12 +131,12 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
               }
             };
             window.addEventListener("click", handleOutsideClick);
-
+  
             return () => {
               window.removeEventListener("click", handleOutsideClick);
             };
           }, [isShow]);
-
+  
           return (
             <div className="relative">
               <button
@@ -201,16 +202,7 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
         ),
       },
       {
-        accessorKey: "alamatUsaha",
-        header: "Alamat Usaha",
-        cell: (info) => (
-          <div className="w-[200px] h-[50px] max-h-[50px] overflow-y-auto">
-            {info.getValue()}
-          </div>
-        ),
-      },
-      {
-        accessorKey: "noAgenda",
+        accessorKey: "nomorAgendaPermohonan",
         header: "No Agenda",
         cell: (info) => info.row.original.nomorAgendaPermohonan || "-",
       },
@@ -231,6 +223,7 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
       {
         accessorKey: "sumberDana",
         header: "Sumber Dana",
+        cell: (info) => info.row.original.sumberDana || "-",
       },
       {
         accessorKey: "jumlahBantuan",
@@ -246,6 +239,10 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
         header: "Status",
       },
       {
+        accessorKey: "statusBantuan",
+        header: "Status Bantuan",
+      },
+      {
         accessorKey: "namaPendamping",
         header: "Nama Pendamping",
       },
@@ -253,14 +250,13 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
         accessorKey: "pekerjaanPendamping",
         header: "Pekerjaan Pendamping",
       },
-
       {
-        accessorKey: "nik",
+        accessorKey: "NIK",
         header: "NIK Pemohon",
       },
       {
         accessorKey: "alamatUsaha",
-        header: "Alamat Pemohon",
+        header: "Alamat Usaha",
         cell: (info) => (
           <div className="w-[200px] h-[50px] max-h-[50px] overflow-y-auto">
             {info.getValue()}
@@ -270,6 +266,7 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
     ],
     []
   );
+  
 
   const table = useReactTable({
     data: tableData,
@@ -454,4 +451,8 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
   );
 };
 
-export default TableUEP;
+export default TableManfaat;
+
+
+
+
