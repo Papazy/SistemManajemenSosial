@@ -51,7 +51,9 @@ const CetakDataRekapitulasi = ({ breadcrumbItems, tipe }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const [filteredData, setFilteredData] = useState(null);
+  const [filteredData, setFilteredData] = useState({
+    '' : ''
+  });
 
   useEffect(()=>{ 
     const fetchData = async() =>{

@@ -4,7 +4,7 @@ const evaluasiMANFAATSchema = new mongoose.Schema({
   statusBantuan: {
     type: String,
     required: true,
-    enum: ['Tetap', 'Berjalan', 'Hilang']
+    
   },
   namaPendamping: {
     type: String,
@@ -24,4 +24,4 @@ const evaluasiMANFAATSchema = new mongoose.Schema({
   }
 });
 
-export const EvaluasiManfaat = mongoose.model('EvaluasiManfaat', evaluasiMANFAATSchema);
+export const EvaluasiManfaat = mongoose.models.EvaluasiManfaat || mongoose.model('EvaluasiManfaat', evaluasiMANFAATSchema);

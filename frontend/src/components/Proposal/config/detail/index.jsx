@@ -1,21 +1,21 @@
 import React from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
 import Manfaat from './Manfaat';
-import EvaluasiKUBE from './KUBE';
-import EvaluasiUEP from './UEP';
+import DetailKUBE from './KUBE';
+import DetailUEP from './UEP';
 
-const EvaluasiRoutes = ({ breadcrumbItems }) => {
+const DetailRoutes = ({ breadcrumbItems }) => {
   const {tipe, id} = useParams();
   const newBreadcrumbItems = [...breadcrumbItems, { label: 'Input Data', path: '/proposal' }];
  
   if(tipe ===  "uep"){
     return (
-      <EvaluasiUEP breadcrumbItems={[...newBreadcrumbItems, {label: 'Usaha Ekonomi Produktif (UEP)', path:''}]} />
+      <DetailUEP breadcrumbItems={[...newBreadcrumbItems, {label: 'Usaha Ekonomi Produktif (UEP)', path:''}]} />
     )
   }else if(tipe.toLowerCase() === "kube"){
     return(
 
-      <EvaluasiKUBE breadcrumbItems={[...newBreadcrumbItems, {label: 'Kelompok Usaha Bersama (KUBE)', path:''}]} />
+      <DetailKUBE breadcrumbItems={[...newBreadcrumbItems, {label: 'Kelompok Usaha Bersama (KUBE)', path:''}]} />
     )
   }else{
     return (
@@ -24,5 +24,5 @@ const EvaluasiRoutes = ({ breadcrumbItems }) => {
   }
 };
 
-export default EvaluasiRoutes;
+export default DetailRoutes;
 

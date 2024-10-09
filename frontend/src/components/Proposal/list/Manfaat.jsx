@@ -77,14 +77,13 @@ const TableManfaat = ({ jenis = "ppks", tipe }) => {
       const evaluasi = evaluasiData.find((e) => e._id === item._id);
       return {
         ...item,
-        statusBantuan: evaluasi?.statusBantuan || "-",
-        namaPendamping: evaluasi?.namaPendamping || "-",
-        pekerjaanPendamping: evaluasi?.pekerjaanPendamping || "-",
-        sumberDana: verifikasi?.sumberDana || "-",
-        jumlahBantuan: verifikasi?.jumlahBantuan || "-",
-        tahun: verifikasi?.tahun || "-",
-        status: verifikasi?.status || "-",
-        keterangan: verifikasi?.keterangan || "-",
+        statusBantuan: item.evaluasiManfaat.statusBantuan || "-",
+        namaPendamping: item.evaluasiManfaat.namaPendamping || "-",
+        pekerjaanPendamping: item.evaluasiManfaat.pekerjaanPendamping || "-",
+        sumberDana: item.verifikasiManfaat.sumberDana || "-",
+        jumlahBantuan: item.verifikasiManfaat.jumlahBantuan || "-",
+        tahun: item.verifikasiManfaat.tahun || "-",
+        status: item.verifikasiManfaat.status || "-",
       };
     });
     setTableData(combinedData);
@@ -107,7 +106,6 @@ const TableManfaat = ({ jenis = "ppks", tipe }) => {
         cell: function Cell(info) {
           const [isShow, setIsShow] = useState(false);
   
-          // Fungsi untuk menangani aksi edit, hapus, detail
           const handleAction = (action) => {
             if (action === "edit") {
               handleEdit(info.row.original);
@@ -119,7 +117,6 @@ const TableManfaat = ({ jenis = "ppks", tipe }) => {
             setIsShow(false); // Tutup menu setelah aksi
           };
   
-          // Fungsi untuk mendeteksi klik di luar menu
           useEffect(() => {
             const handleOutsideClick = (e) => {
               if (
@@ -148,15 +145,15 @@ const TableManfaat = ({ jenis = "ppks", tipe }) => {
               {isShow && (
                 <ul className="rowMenu fixed bg-slate-100/80 border rounded shadow-md w-32 z-[1000] p-1">
                   <a
-                    href={`/proposal/uep/detail/${info.row.original._id}`}
+                    href={`/proposal/manfaat/detail/${info.row.original._id}`}
                     className="font-semibold flex gap-2 pl-3 items-center text-white py-2 hover:bg-green-500 bg-green-600 hover:text-white transition duration-200 ease-in-out cursor-pointer mb-1 rounded-md text-center"
-                    style={{ border: "2px solid #C8E6C9" }} // Hijau Muda dengan border
+                    style={{ border: "2px solid #C8E6C9" }}
                   >
                     <CiViewList />
                     Detail
                   </a>
                   <a
-                    href={`/proposal/uep/edit/${info.row.original._id}`}
+                    href={`/proposal/manfaat/edit/${info.row.original._id}`}
                     className="font-semibold flex gap-2 pl-3 items-center text-white py-2 hover:bg-blue-500 bg-blue-600 hover:text-white transition duration-200 ease-in-out cursor-pointer mb-1 rounded-md text-center"
                     style={{ border: "2px solid #B2EBF2" }}
                   >
@@ -182,7 +179,7 @@ const TableManfaat = ({ jenis = "ppks", tipe }) => {
         header: "Verifikasi",
         cell: (info) => (
           <a
-            href={`/proposal/uep/verifikasi/${info.row.original._id}`}
+            href={`/proposal/manfaat/verifikasi/${info.row.original._id}`}
             className="btn-config bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
           >
             Verifikasi
@@ -194,12 +191,20 @@ const TableManfaat = ({ jenis = "ppks", tipe }) => {
         header: "Evaluasi",
         cell: (info) => (
           <a
-            href={`/proposal/uep/evaluasi/${info.row.original._id}`}
+            href={`/proposal/manfaat/evaluasi/${info.row.original._id}`}
             className="btn-config bg-orange-500 hover:bg-red-600 text-white py-2 px-4 rounded"
           >
             Evaluasi
           </a>
         ),
+      },
+      {
+        accessorKey: "NIK",
+        header: "NIK Pemohon",
+      },
+      {
+        accessorKey: "nomorHP",
+        header: "Nomor HP",
       },
       {
         accessorKey: "nomorAgendaPermohonan",
@@ -213,6 +218,14 @@ const TableManfaat = ({ jenis = "ppks", tipe }) => {
           new Date(info.row.original.tanggalPermohonan).toLocaleDateString(),
       },
       {
+        accessorKey: "suratKurangMampu",
+        header: "Surat Kurang Mampu",
+      },
+      {
+        accessorKey: "rekomendasiCamat",
+        header: "Rekomendasi Camat",
+      },
+      {
         accessorKey: "bidangBantuan",
         header: "Bidang Bantuan",
       },
@@ -221,27 +234,23 @@ const TableManfaat = ({ jenis = "ppks", tipe }) => {
         header: "Jenis Bantuan",
       },
       {
-        accessorKey: "sumberDana",
-        header: "Sumber Dana",
-        cell: (info) => info.row.original.sumberDana || "-",
-      },
-      {
-        accessorKey: "jumlahBantuan",
-        header: "Jumlah Bantuan",
-        cell: (info) => info.row.original.jumlahBantuan || "-",
-      },
-      {
         accessorKey: "tahun",
         header: "Tahun",
       },
       {
-        accessorKey: "status",
-        header: "Status",
+        accessorKey: "jumlahBantuan",
+        header: "Jumlah Bantuan",
+        cell: (info) => `Rp ${info.row.original.jumlahBantuan.toLocaleString()}`,
+      },
+      {
+        accessorKey: "sumberDana",
+        header: "Sumber Dana",
       },
       {
         accessorKey: "statusBantuan",
-        header: "Status Bantuan",
+        header: "Status",
       },
+  
       {
         accessorKey: "namaPendamping",
         header: "Nama Pendamping",
@@ -250,22 +259,11 @@ const TableManfaat = ({ jenis = "ppks", tipe }) => {
         accessorKey: "pekerjaanPendamping",
         header: "Pekerjaan Pendamping",
       },
-      {
-        accessorKey: "NIK",
-        header: "NIK Pemohon",
-      },
-      {
-        accessorKey: "alamatUsaha",
-        header: "Alamat Usaha",
-        cell: (info) => (
-          <div className="w-[200px] h-[50px] max-h-[50px] overflow-y-auto">
-            {info.getValue()}
-          </div>
-        ),
-      },
+      
     ],
     []
   );
+  
   
 
   const table = useReactTable({
@@ -275,6 +273,9 @@ const TableManfaat = ({ jenis = "ppks", tipe }) => {
       sorting,
       globalFilter,
       pagination,
+    },
+    defaultColumn:{
+      size: 200
     },
     onSortingChange: setSorting,
     onPaginationChange: setPagination,

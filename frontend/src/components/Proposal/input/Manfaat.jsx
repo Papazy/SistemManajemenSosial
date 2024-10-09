@@ -1,9 +1,11 @@
 import Breadcrumb from "../../breadcrumb";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Manfaat = ({ breadcrumbItems }) => {
   const [bidangBantuanList, setBidangBantuanList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     NIK: "",
     nomorHP: "",
@@ -13,6 +15,17 @@ const Manfaat = ({ breadcrumbItems }) => {
     rekomendasiCamat: "",
     bidangBantuan: "",
     jenisBantuan: "",
+    verifikasiManfaat: {
+      "tahun": 0,
+      "jumlahBantuan": 0,
+      "sumberDana": "-",
+      "status": "-"
+    },
+    evaluasiManfaat: {
+      "statusBantuan": "-",
+      "namaPendamping": "-",
+      "pekerjaanPendamping": "-"
+    }
   });
 
   useEffect(() => {
@@ -36,11 +49,12 @@ const Manfaat = ({ breadcrumbItems }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/manfaat/submit`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/manfaat/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(formData),
       });
       if (response.ok) {
@@ -56,6 +70,7 @@ const Manfaat = ({ breadcrumbItems }) => {
           bidangBantuan: "",
           jenisBantuan: "",
         });
+        navigate("/proposal/manfaat");
       } else {
         alert("Failed to submit form.");
       }

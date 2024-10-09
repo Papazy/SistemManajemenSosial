@@ -93,4 +93,64 @@
   "bidangBantuan": "BECAK",
   "jenisBantuan": "Bantuan Becak Baru",
   "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67055e77f90247a0679f969d"
+  },
+  "NIK": "1234567890123456",
+  "nomorHP": "081234567890",
+  "nomorAgendaPermohonan": "AGD/2024/001",
+  "tanggalPermohonan": {
+    "$date": "2024-09-23T00:00:00.000Z"
+  },
+  "suratKurangMampu": "SKM/2024/001 - 2024-09-20",
+  "rekomendasiCamat": "RKC/2024/001 - 2024-09-21",
+  "bidangBantuan": "BECAK",
+  "jenisBantuan": "Bantuan Becak Baru",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67056b04fadacf5f31c5846b"
+  },
+  "NIK": "1234567890123456",
+  "nomorHP": "081234567890",
+  "nomorAgendaPermohonan": "AGD-2023-002",
+  "tanggalPermohonan": {
+    "$date": "2023-10-01T00:00:00.000Z"
+  },
+  "suratKurangMampu": "SKM-2023-002",
+  "rekomendasiCamat": "RC-2023-002",
+  "bidangBantuan": "BECAK",
+  "jenisBantuan": "Bantuan Bibit Ikan",
+  "verifikasiManfaat": {
+    "$oid": "67056b04fadacf5f31c58467"
+  },
+  "evaluasiManfaat": {
+    "$oid": "67056b04fadacf5f31c58469"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6706c3ef87f7eeead5875d3c"
+  },
+  "NIK": "1234567890123456",
+  "nomorHP": "081234567890",
+  "nomorAgendaPermohonan": "AGD-2023-002",
+  "tanggalPermohonan": {
+    "$date": "2023-10-01T00:00:00.000Z"
+  },
+  "suratKurangMampu": "SKM-2023-002",
+  "rekomendasiCamat": "RC-2023-002",
+  "bidangBantuan": "BECAK",
+  "jenisBantuan": "Bantuan Bibit Ikan",
+  "verifikasiManfaat": {
+    "$oid": "6706c3ef87f7eeead5875d38"
+  },
+  "evaluasiManfaat": {
+    "$oid": "6706c3ef87f7eeead5875d3a"
+  },
+  "__v": 0
 }]

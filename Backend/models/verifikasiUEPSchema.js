@@ -11,12 +11,11 @@ const verifikasiUEPSchema = new mongoose.Schema({
   },
   sumberDana: {
     type: String,
-    enum: ['APBN', 'APBA', 'APBK'],
     required: true // User must select a funding source
   },
   status: {
     type: String,
-    enum: ['Pending', 'Approved', 'Rejected'],
+    enum: ['Pending', 'Approved', 'Rejected', '-'],
     default: 'pending',
     required: true // User must provide the verification status
   },

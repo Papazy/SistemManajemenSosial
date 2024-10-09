@@ -1,10 +1,12 @@
 import Breadcrumb from "../../../breadcrumb";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../../context/authContext";
+import { useNavigate } from "react-router-dom";
 
 const UEP = ({ breadcrumbItems, data }) => {
   const [bidangBantuanList, setBidangBantuanList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nik: "",
     nomorHP: "",
@@ -14,10 +16,21 @@ const UEP = ({ breadcrumbItems, data }) => {
     rekomendasiCamat: "",
     bidangBantuan: "",
     jenisBantuan: "",
-    alamatUsaha: ""
+    alamatUsaha: "",
+    verifikasiUEP: {
+      tahun: "",
+      jumlahBantuan: "",
+      sumberDana: "",
+      status: "",
+    },
+    evaluasiUEP: {
+      statusBantuan: "",
+      namaPendamping: "",
+      pekerjaanPendamping: ""
+    }
   });
 
-  const {getToken} = useAuth();
+  const { getToken } = useAuth();
 
   useEffect(() => {
     console.log("Data dari UEP Edit:", data);
@@ -32,7 +45,18 @@ const UEP = ({ breadcrumbItems, data }) => {
         rekomendasiCamat: data.rekomendasiCamat || "",
         bidangBantuan: data.bidangBantuan || "",
         jenisBantuan: data.jenisBantuan || "",
-        alamatUsaha: data.alamatUsaha || ""
+        alamatUsaha: data.alamatUsaha || "",
+        verifikasiUEP: {
+          tahun: data.verifikasiUEP?.tahun || "0",
+          jumlahBantuan: data.verifikasiUEP?.jumlahBantuan || "0",
+          sumberDana: data.verifikasiUEP?.sumberDana || "-",
+          status: data.verifikasiUEP?.status || "Approved"
+        },
+        evaluasiUEP: {
+          statusBantuan: data.evaluasiUEP?.statusBantuan || "-",
+          namaPendamping: data.evaluasiUEP?.namaPendamping || "-",
+          pekerjaanPendamping: data.evaluasiUEP?.pekerjaanPendamping || "-"
+        }
       });
     }
   }, [data]);
@@ -56,19 +80,18 @@ const UEP = ({ breadcrumbItems, data }) => {
     e.preventDefault();
     try {
       const token = getToken();
-      console.log("token", token);
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/uep/${data ? `edit/${data._id}` : 'add'}`, {
-        method: data ? "PUT" : "POST", // Gunakan PUT untuk edit
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/uep/update/${data._id}`, {
+        method: "PUT", 
         headers: {
           'Authorization': `Bearer ${token}`,   
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       });
 
       if (response.ok) {
         alert("Data berhasil disimpan!");
-        // Reset form jika diperlukan
         setFormData({
           nik: "",
           nomorHP: "",
@@ -78,8 +101,20 @@ const UEP = ({ breadcrumbItems, data }) => {
           rekomendasiCamat: "",
           bidangBantuan: "",
           jenisBantuan: "",
-          alamatUsaha: ""
+          alamatUsaha: "",
+          verifikasiUEP: {
+            tahun: "",
+            jumlahBantuan: "",
+            sumberDana: "",
+            status: ""
+          },
+          evaluasiUEP: {
+            statusBantuan: "",
+            namaPendamping: "",
+            pekerjaanPendamping: ""
+          }
         });
+        navigate("/proposal/uep");
       } else {
         const data = await response.json();
         console.log("Error submitting form:", data);
@@ -94,7 +129,6 @@ const UEP = ({ breadcrumbItems, data }) => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
-
   return (
     <div className="p-4">
       <Breadcrumb items={breadcrumbItems} />
@@ -143,23 +177,23 @@ const UEP = ({ breadcrumbItems, data }) => {
           />
         </div>
         <div>
-          <label htmlFor="suratKurangMampu" className="block text-sm font-medium text-gray-700">Surat Kurang Mampu (No & TGL)</label>
+          <label htmlFor="suratKurangMampu" className="block text-sm font-medium text-gray-700">Surat Kurang Mampu</label>
           <input
             type="text"
             id="suratKurangMampu"
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            placeholder="Masukkan Surat Kurang Mampu (No & TGL)"
+            placeholder="Masukkan Surat Kurang Mampu"
             value={formData.suratKurangMampu}
             onChange={handleChange}
           />
         </div>
         <div>
-          <label htmlFor="rekomendasiCamat" className="block text-sm font-medium text-gray-700">Rekomendasi Camat (No & TGL)</label>
+          <label htmlFor="rekomendasiCamat" className="block text-sm font-medium text-gray-700">Rekomendasi Camat</label>
           <input
             type="text"
             id="rekomendasiCamat"
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            placeholder="Masukkan Rekomendasi Camat (No & TGL)"
+            placeholder="Masukkan Rekomendasi Camat"
             value={formData.rekomendasiCamat}
             onChange={handleChange}
           />

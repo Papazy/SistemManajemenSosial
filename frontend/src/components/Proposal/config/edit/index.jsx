@@ -19,7 +19,7 @@ const EditRoutes = ({ breadcrumbItems }) => {
       const API_URL = [
         `${process.env.REACT_APP_API_URL}/uep/getall-uep`,
         `${process.env.REACT_APP_API_URL}/kube/getall-kube`,
-        `${process.env.REACT_APP_API_URL}/uep/getall-uep`,
+        `${process.env.REACT_APP_API_URL}/manfaat/getall`,
       ]
       try{
 

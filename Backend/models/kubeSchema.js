@@ -67,6 +67,14 @@ const kubeSchema = new mongoose.Schema({
     type: String,
     required: [true, "Alamat Usaha is required"],
   },
+  verifikasiKUBE: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'VerifikasiKUBE'
+  },
+  evaluasiKUBE: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EvaluasiKUBE'
+  }
 });
 
 export const Kube = mongoose.model("Kube", kubeSchema);

@@ -1,4 +1,4 @@
-import { VerifikasiManfaat } from "../models/verifikasiMANFAATSchema.js";
+import { VerifikasiManfaat } from "../models/verifikasiManfaatSchema.js";
 
 export const addManfaat = async (req, res) => {
   const { tahun, jumlahBantuan, sumberDana, status } = req.body;

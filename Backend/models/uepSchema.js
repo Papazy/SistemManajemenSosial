@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const uepSchema = new mongoose.Schema({
   nik: {
@@ -38,6 +38,14 @@ const uepSchema = new mongoose.Schema({
     type: String,
     required: [true, "Alamat Usaha is required"],
   },
+  verifikasiUEP: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'VerifikasiUEP'
+  },
+  evaluasiUEP: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EvaluasiUEP'
+  }
 });
 
 export const Uep = mongoose.model("Uep", uepSchema);

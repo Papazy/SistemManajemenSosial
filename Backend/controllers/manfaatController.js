@@ -1,6 +1,8 @@
-import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/error.js";
 import { Manfaat } from "../models/manfaatSchema.js";
+import { VerifikasiManfaat } from "../models/verifikasiManfaatSchema.js";
+import { EvaluasiManfaat } from "../models/evaluasiManfaatSchema.js";
+import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 
 export const addNewManfaat = catchAsyncErrors(async (req, res, next) => {
   const {
@@ -11,7 +13,9 @@ export const addNewManfaat = catchAsyncErrors(async (req, res, next) => {
     suratKurangMampu,
     rekomendasiCamat,
     bidangBantuan,
-    jenisBantuan
+    jenisBantuan,
+    verifikasiManfaat,
+    evaluasiManfaat
   } = req.body;
 
   if (
@@ -27,6 +31,14 @@ export const addNewManfaat = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Mohon Isi Semua Field Yang Diperlukan!", 400));
   }
 
+  // Create and save verifikasiManfaat
+  const newVerifikasiManfaat = new VerifikasiManfaat(verifikasiManfaat);
+  await newVerifikasiManfaat.save();
+
+  // Create and save evaluasiManfaat
+  const newEvaluasiManfaat = new EvaluasiManfaat(evaluasiManfaat);
+  await newEvaluasiManfaat.save();
+
   const manfaat = await Manfaat.create({
     NIK,
     nomorHP,
@@ -35,7 +47,9 @@ export const addNewManfaat = catchAsyncErrors(async (req, res, next) => {
     suratKurangMampu,
     rekomendasiCamat,
     bidangBantuan,
-    jenisBantuan
+    jenisBantuan,
+    verifikasiManfaat: newVerifikasiManfaat._id,
+    evaluasiManfaat: newEvaluasiManfaat._id
   });
 
   res.status(201).json({
@@ -46,33 +60,57 @@ export const addNewManfaat = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const updateManfaat = catchAsyncErrors(async (req, res, next) => {
-  const newManfaatData = {
-    NIK: req.body.NIK,
-    nomorHP: req.body.nomorHP,
-    nomorAgendaPermohonan: req.body.nomorAgendaPermohonan,
-    tanggalPermohonan: req.body.tanggalPermohonan,
-    suratKurangMampu: req.body.suratKurangMampu,
-    rekomendasiCamat: req.body.rekomendasiCamat,
-    bidangBantuan: req.body.bidangBantuan,
-    jenisBantuan: req.body.jenisBantuan
-  };
+  const { id } = req.params;
+  const {
+    NIK,
+    nomorHP,
+    nomorAgendaPermohonan,
+    tanggalPermohonan,
+    suratKurangMampu,
+    rekomendasiCamat,
+    bidangBantuan,
+    jenisBantuan,
+    verifikasiManfaat,
+    evaluasiManfaat
+  } = req.body;
 
-  const manfaat = await Manfaat.findByIdAndUpdate(req.params.id, newManfaatData, {
-    new: true,
-    runValidators: true,
-    useFindAndModify: false,
-  });
+  // Update verifikasiManfaat
+  if (verifikasiManfaat && verifikasiManfaat._id) {
+    await VerifikasiManfaat.findByIdAndUpdate(verifikasiManfaat._id, verifikasiManfaat, { new: true });
+  }
+
+  // Update evaluasiManfaat
+  if (evaluasiManfaat && evaluasiManfaat._id) {
+    await EvaluasiManfaat.findByIdAndUpdate(evaluasiManfaat._id, evaluasiManfaat, { new: true });
+  }
+
+  const updatedManfaat = await Manfaat.findByIdAndUpdate(id, {
+    NIK,
+    nomorHP,
+    nomorAgendaPermohonan,
+    tanggalPermohonan,
+    suratKurangMampu,
+    rekomendasiCamat,
+    bidangBantuan,
+    jenisBantuan,
+    verifikasiManfaat: verifikasiManfaat._id,
+    evaluasiManfaat: evaluasiManfaat._id
+  }, { new: true });
+
+  if (!updatedManfaat) {
+    return next(new ErrorHandler("Manfaat not found", 404));
+  }
 
   res.status(200).json({
     success: true,
-    message: "Data Manfaat Berhasil Diperbarui!",
-    manfaat,
+    message: "Manfaat Updated!",
+    updatedManfaat,
   });
 });
 
 export const deleteManfaat = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
-  const manfaat = await Manfaat.findById(id);
+  let manfaat = await Manfaat.findById(id);
   if (!manfaat) {
     return next(new ErrorHandler("Data Manfaat Tidak Ditemukan!", 404));
   }
@@ -84,7 +122,9 @@ export const deleteManfaat = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getAllManfaat = catchAsyncErrors(async (req, res, next) => {
-  const manfaatList = await Manfaat.find();
+  const manfaatList = await Manfaat.find()
+    .populate('verifikasiManfaat')
+    .populate('evaluasiManfaat');
   res.status(200).json({
     success: true,
     manfaatList,
@@ -94,7 +134,9 @@ export const getAllManfaat = catchAsyncErrors(async (req, res, next) => {
 export const getSingleManfaat = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
   try {
-    const manfaat = await Manfaat.findById(id);
+    const manfaat = await Manfaat.findById(id)
+      .populate('verifikasiManfaat')
+      .populate('evaluasiManfaat');
     if (!manfaat) {
       return next(new ErrorHandler("Data Manfaat Tidak Ditemukan!", 404));
     }

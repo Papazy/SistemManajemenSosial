@@ -1,9 +1,12 @@
 import Breadcrumb from "../../../breadcrumb";
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../../../../context/authContext";
+import { useNavigate } from "react-router-dom";
 
-const KUBE = ({ breadcrumbItems = [] }) => {
+const KUBE = ({ breadcrumbItems, data }) => {
   const [bidangBantuanList, setBidangBantuanList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     namaKelompok: "",
     nomorHP: "",
@@ -13,18 +16,69 @@ const KUBE = ({ breadcrumbItems = [] }) => {
     tanggalPermohonan: "",
     NIKBendahara: "",
     suratKurangMampu: "",
-    anggota: [{ NIK: "" }, { NIK: "" }, { NIK: "" }, { NIK: "" }, { NIK: "" }, { NIK: "" }, { NIK: "" }],
+    anggota: [
+      {
+        NIK: "",
+        _id: ""
+      }
+    ],
     rekomendasiCamat: "",
     bidangBantuan: "",
     jenisBantuan: "",
     alamatUsaha: "",
+    verifikasiKUBE: {
+      tahun: 0,
+      jumlahBantuan: 0,
+      sumberDana: "",
+      status: "",
+      keterangan: ""
+    },
+    evaluasiKUBE: {
+      statusBantuan: "",
+      namaPendamping: "",
+      pekerjaanPendamping: ""
+    }
   });
 
-  const [, setIsSubmitted] = useState(false);
+  const { getToken } = useAuth();
+
+  useEffect(() => {
+    console.log("Data dari UEP Edit:", data);
+    // Mengisi nilai formData saat data tersedia (untuk keperluan edit)
+    if (data) {
+      setFormData({
+        namaKelompok: data.namaKelompok || "",
+        nomorHP: data.nomorHP || "",
+        NIKKetua: data.NIKKetua || "",
+        nomorAgendaPermohonan: data.nomorAgendaPermohonan || "",
+        NIKSekretaris: data.NIKSekretaris || "",
+        tanggalPermohonan: data.tanggalPermohonan ? data.tanggalPermohonan.split('T')[0] : "",
+        NIKBendahara: data.NIKBendahara || "",
+        suratKurangMampu: data.suratKurangMampu || "",
+        anggota: data.anggota || [{ NIK: "", _id: "" }],
+        rekomendasiCamat: data.rekomendasiCamat || "",
+        bidangBantuan: data.bidangBantuan || "",
+        jenisBantuan: data.jenisBantuan || "",
+        alamatUsaha: data.alamatUsaha || "",
+        verifikasiKUBE: {
+          tahun: data.verifikasiKUBE?.tahun || 0,
+          jumlahBantuan: data.verifikasiKUBE?.jumlahBantuan || 0,
+          sumberDana: data.verifikasiKUBE?.sumberDana || "",
+          status: data.verifikasiKUBE?.status || "",
+          keterangan: data.verifikasiKUBE?.keterangan || ""
+        },
+        evaluasiKUBE: {
+          statusBantuan: data.evaluasiKUBE?.statusBantuan || "",
+          namaPendamping: data.evaluasiKUBE?.namaPendamping || "",
+          pekerjaanPendamping: data.evaluasiKUBE?.pekerjaanPendamping || ""
+        }
+      });
+    }
+  }, [data]);
 
   useEffect(() => {
     const fetchBidangBantuan = async () => {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/kube/bidang-bantuan-kube`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/uep/bidang-bantuan-uep`);
       const data = await response.json();
       setBidangBantuanList(data.bidangBantuan);
       setIsLoading(false);
@@ -32,33 +86,27 @@ const KUBE = ({ breadcrumbItems = [] }) => {
     fetchBidangBantuan();
   }, []);
 
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [id]: value,
-    }));
-  };
-
-  const handleAnggotaChange = (index, e) => {
-    const updatedAnggota = [...formData.anggota];
-    updatedAnggota[index].NIK = e.target.value;
-    setFormData({ ...formData, anggota: updatedAnggota });
+    setFormData({ ...formData, [id]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/kube/submit`, {
-        method: "POST",
+      const token = getToken();
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/kube/update/${data._id}`, {
+        method: "PUT", 
         headers: {
+          'Authorization': `Bearer ${token}`,   
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        credentials: 'include',
+        body: JSON.stringify(formData)
       });
+
       if (response.ok) {
-        setIsSubmitted(true);
-        alert("Form submitted successfully!");
+        alert("Data berhasil disimpan!");
         setFormData({
           namaKelompok: "",
           nomorHP: "",
@@ -68,24 +116,60 @@ const KUBE = ({ breadcrumbItems = [] }) => {
           tanggalPermohonan: "",
           NIKBendahara: "",
           suratKurangMampu: "",
-          anggota: [{ NIK: "" }, { NIK: "" }, { NIK: "" }, { NIK: "" }, { NIK: "" }, { NIK: "" }, { NIK: "" }],
+          anggota: [
+            {
+              NIK: "",
+              _id: ""
+            }
+          ],
           rekomendasiCamat: "",
           bidangBantuan: "",
           jenisBantuan: "",
           alamatUsaha: "",
+          verifikasiKUBE: {
+            tahun: 0,
+            jumlahBantuan: 0,
+            sumberDana: "",
+            status: "",
+            keterangan: ""
+          },
+          evaluasiKUBE: {
+            statusBantuan: "",
+            namaPendamping: "",
+            pekerjaanPendamping: ""
+          }
         });
+        navigate("/proposal/kube");
       } else {
-        alert("Failed to submit form.");
+        const data = await response.json();
+        console.log("Error submitting form:", data);
+        alert("Terjadi kesalahan, coba lagi.");
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.log("Error submitting form:", error);
+      alert("Terjadi kesalahan saat mengirim data.");
     }
   };
 
-  if(isLoading){
-    return <p>Loading...</p>
-  }
+  const handleAnggotaChange = (index, e) => {
+    const { value } = e.target;
+    const newAnggota = [...formData.anggota];
+    newAnggota[index] = { NIK: value };
+    setFormData({ ...formData, anggota: newAnggota });
+  };
 
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
+
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className="p-4">
       <Breadcrumb items={breadcrumbItems} />
@@ -277,6 +361,7 @@ const KUBE = ({ breadcrumbItems = [] }) => {
         </div>
       </form>
     </div>
+  
   );
 };
 

@@ -43,47 +43,20 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
     };
     fetchTypes();
   }, [refresh]);
-  // verifikasi
-  useEffect(() => {
-    const fetchTypes = async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/verifikasi/Uep/verifikasi`
-      );
-      const responseData = await response.json();
-      const data = responseData.data;
-      setVerifikasiData(data);
-      console.log("Verif ", data);
-    };
-    fetchTypes();
-  }, [refresh]);
-  // evaluasi
-  useEffect(() => {
-    const fetchTypes = async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/evaluasi/Uep/getall-eval`
-      );
-      const responseData = await response.json();
-      const data = responseData.data;
-      setEvaluasiData(data);
-      console.log("Eval ", data);
-    };
-    fetchTypes();
-  }, [refresh]);
+  
 
   // Gabungan
   useEffect(() => {
     const combinedData = rawData.map((item, index) => {
-      const verifikasi = verifikasiData.find((v) => v._id === item._id);
-      const evaluasi = evaluasiData.find((e) => e._id === item._id);
       return {
         ...item,
-        statusBantuan: evaluasi?.statusBantuan || "-",
-        namaPendamping: evaluasi?.namaPendamping || "-",
-        pekerjaanPendamping: evaluasi?.pekerjaanPendamping || "-",
-        sumberDana: verifikasi?.sumberDana || "-",
-        jumlahBantuan: verifikasi?.jumlahBantuan || "-",
-        tahun: verifikasi?.tahun || "-",
-        status: verifikasi?.status || "-",
+        statusBantuan: item.evaluasiUEP.statusBantuan || "-",
+        namaPendamping: item.evaluasiUEP.namaPendamping || "-",
+        pekerjaanPendamping: item.evaluasiUEP.pekerjaanPendamping || "-",
+        sumberDana: item.verifikasiUEP.sumberDana || "-",
+        jumlahBantuan: item.verifikasiUEP.jumlahBantuan || "-",
+        tahun: item.verifikasiUEP.tahun || "-",
+        status: item.verifikasiUEP.status || "-",
       };
     });
     setTableData(combinedData);
@@ -201,7 +174,7 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
         ),
       },
       {
-        accessorKey: "alamatUsaha",
+        accessorKey: "alamatUsaha", 
         header: "Alamat Usaha",
         cell: (info) => (
           <div className="w-[200px] h-[50px] max-h-[50px] overflow-y-auto">
@@ -242,7 +215,7 @@ const TableUEP = ({ jenis = "ppks", tipe }) => {
         header: "Tahun",
       },
       {
-        accessorKey: "status",
+        accessorKey: "statusBantuan",
         header: "Status",
       },
       {

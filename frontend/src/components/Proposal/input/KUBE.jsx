@@ -1,8 +1,10 @@
 import Breadcrumb from "../../breadcrumb";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const KUBE = ({ breadcrumbItems }) => {
   const [bidangBantuanList, setBidangBantuanList] = useState([]);
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     namaKelompok: "",
@@ -18,6 +20,17 @@ const KUBE = ({ breadcrumbItems }) => {
     bidangBantuan: "",
     jenisBantuan: "",
     alamatUsaha: "",
+    verifikasiKUBE: {
+      "tahun": 0,
+      "jumlahBantuan": 0,
+      "sumberDana": "-",
+      "status": "-"
+    },
+    evaluasiKUBE: {
+      "statusBantuan": "-",
+      "namaPendamping": "-",
+      "pekerjaanPendamping": "-"
+    }
   });
 
   const [, setIsSubmitted] = useState(false);
@@ -49,11 +62,12 @@ const KUBE = ({ breadcrumbItems }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/kube/submit`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/kube/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(formData),
       });
       if (response.ok) {
@@ -74,6 +88,7 @@ const KUBE = ({ breadcrumbItems }) => {
           jenisBantuan: "",
           alamatUsaha: "",
         });
+        navigate("/proposal/kube");
       } else {
         alert("Failed to submit form.");
       }

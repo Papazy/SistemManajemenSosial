@@ -43,49 +43,20 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
     };
     fetchTypes();
   }, [refresh]);
-
-  // verifikasi
-  useEffect(() => {
-    const fetchTypes = async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/verifikasi/Kube/verifikasi`
-      );
-      const responseData = await response.json();
-      const data = responseData.data;
-      setVerifikasiData(data);
-      console.log("Verif ", data);
-    };
-    fetchTypes();
-  }, [refresh]);
-
-  // evaluasi
-  useEffect(() => {
-    const fetchTypes = async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/evaluasi/Uep/getall-eval`
-      );
-      const responseData = await response.json();
-      const data = responseData.data;
-      setEvaluasiData(data);
-      console.log("Eval ", data);
-    };
-    fetchTypes();
-  }, [refresh]);
+  
 
   // Gabungan
   useEffect(() => {
     const combinedData = rawData.map((item, index) => {
-      const verifikasi = verifikasiData.find((v) => v._id === item._id);
-      const evaluasi = evaluasiData.find((e) => e._id === item._id);
       return {
         ...item,
-        statusBantuan: evaluasi?.statusBantuan || "-",
-        namaPendamping: evaluasi?.namaPendamping || "-",
-        pekerjaanPendamping: evaluasi?.pekerjaanPendamping || "-",
-        sumberDana: verifikasi?.sumberDana || "-",
-        jumlahBantuan: verifikasi?.jumlahBantuan || "-",
-        tahun: verifikasi?.tahun || "-",
-        status: verifikasi?.status || "-",
+        statusBantuan: item.evaluasiKUBE.statusBantuan || "-",
+        namaPendamping: item.evaluasiKUBE.namaPendamping || "-",
+        pekerjaanPendamping: item.evaluasiKUBE.pekerjaanPendamping || "-",
+        sumberDana: item.verifikasiKUBE.sumberDana || "-",
+        jumlahBantuan: item.verifikasiKUBE.jumlahBantuan || "-",
+        tahun: item.verifikasiKUBE.tahun || "-",
+        status: item.verifikasiKUBE.status || "-",
       };
     });
     setTableData(combinedData);
@@ -107,8 +78,7 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
         header: "Config",
         cell: function Cell(info) {
           const [isShow, setIsShow] = useState(false);
-
-          // Fungsi untuk menangani aksi edit, hapus, detail
+  
           const handleAction = (action) => {
             if (action === "edit") {
               handleEdit(info.row.original);
@@ -117,10 +87,9 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
             } else if (action === "detail") {
               handleDetail(info.row.original);
             }
-            setIsShow(false); // Tutup menu setelah aksi
+            setIsShow(false);
           };
-
-          // Fungsi untuk mendeteksi klik di luar menu
+  
           useEffect(() => {
             const handleOutsideClick = (e) => {
               if (
@@ -132,12 +101,12 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
               }
             };
             window.addEventListener("click", handleOutsideClick);
-
+  
             return () => {
               window.removeEventListener("click", handleOutsideClick);
             };
           }, [isShow]);
-
+  
           return (
             <div className="relative">
               <button
@@ -203,18 +172,34 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
         ),
       },
       {
-        accessorKey: "alamatUsaha",
-        header: "Alamat Usaha",
-        cell: (info) => (
-          <div className="w-[200px] h-[50px] max-h-[50px] overflow-y-auto">
-            {info.getValue()}
-          </div>
-        ),
+        accessorKey: "namaKelompok",
+        header: "Nama Kelompok",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "nomorHP",
+        header: "Nomor HP",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "NIKKetua",
+        header: "NIK Ketua",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "NIKSekretaris",
+        header: "NIK Sekretaris",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "NIKBendahara",
+        header: "NIK Bendahara",
+        cell: (info) => info.getValue(),
       },
       {
         accessorKey: "nomorAgendaPermohonan",
         header: "No Agenda",
-        cell: (info) => info.row.original.nomorAgendaPermohonan || "-",
+        cell: (info) => info.getValue() || "-",
       },
       {
         accessorKey: "tanggalPermohonan",
@@ -223,12 +208,24 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
           new Date(info.row.original.tanggalPermohonan).toLocaleDateString(),
       },
       {
+        accessorKey: "suratKurangMampu",
+        header: "Surat Kurang Mampu",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "rekomendasiCamat",
+        header: "Rekomendasi Camat",
+        cell: (info) => info.getValue(),
+      },
+      {
         accessorKey: "bidangBantuan",
         header: "Bidang Bantuan",
+        cell: (info) => info.getValue(),
       },
       {
         accessorKey: "jenisBantuan",
         header: "Jenis Bantuan",
+        cell: (info) => info.getValue(),
       },
       {
         accessorKey: "sumberDana",
@@ -244,7 +241,7 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
         header: "Tahun",
       },
       {
-        accessorKey: "status",
+        accessorKey: "statusBantuan",
         header: "Status",
       },
       {
@@ -255,13 +252,10 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
         accessorKey: "pekerjaanPendamping",
         header: "Pekerjaan Pendamping",
       },
-      {
-        accessorKey: "NIKKetua",
-        header: "NIK Ketua",
-      },
+
       {
         accessorKey: "alamatUsaha",
-        header: "Alamat Pemohon",
+        header: "Alamat Usaha",
         cell: (info) => (
           <div className="w-[200px] h-[50px] max-h-[50px] overflow-y-auto">
             {info.getValue()}
@@ -272,7 +266,6 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
     []
   );
 
-
   const table = useReactTable({
     data: tableData,
     columns,
@@ -281,11 +274,6 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
       globalFilter,
       pagination,
     },
-    defaultColumn: {
-      minSize: 50, // Minimum width of a column
-      size: 'auto', // Use 'auto' for automatic size
-      maxSize: 1000, // Reasonable maximum size if you want to set one
-    },
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
@@ -293,7 +281,6 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
-
 
   const handleEdit = (row) => {
     alert("Edit clicked for: " + row.id);
@@ -346,6 +333,7 @@ const TableKUBE = ({ jenis = "ppks", tipe }) => {
   if (isLoading) {
     return <div className="flex justify-center items-center">Loading ...</div>;
   }
+
   return (
     <>
       {/* Overlay */}

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const EvaluasiUEP = () => {
+const EvaluasiKUBE = () => {
   const { id } = useParams();
   const [formData, setFormData] = useState({
     statusBantuan: '',
     namaPendamping: '',
     pekerjaanPendamping: ''
   });
+  const navigate = useNavigate();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [isEdit, setIsEdit] = useState(false); // To check if we are editing or creating new data
@@ -17,17 +19,17 @@ const EvaluasiUEP = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/uep/getall-uep`);
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/kube/getall-kube`);
         const resData = await res.json();
-        const evaluasiData = resData.ueps.filter((item) => item._id === id)[0];
+        const evaluasiData = resData.kubes.filter((item) => item._id === id)[0];
         setData(evaluasiData);
-        console.log("Data Verifikasi UEP:", evaluasiData);
+        console.log("Data Verifikasi KUBE:", evaluasiData);
 
         if (evaluasiData) {
           setFormData({
-            statusBantuan: evaluasiData.evaluasiUEP.statusBantuan,
-            namaPendamping: evaluasiData.evaluasiUEP.namaPendamping,
-            pekerjaanPendamping: evaluasiData.evaluasiUEP.pekerjaanPendamping
+            statusBantuan: evaluasiData.evaluasiKUBE.statusBantuan,
+            namaPendamping: evaluasiData.evaluasiKUBE.namaPendamping,
+            pekerjaanPendamping: evaluasiData.evaluasiKUBE.pekerjaanPendamping
           });
           setIsEdit(true);
         }
@@ -48,7 +50,7 @@ const EvaluasiUEP = () => {
     try {
    
       // Update data if it exists
-      const res = await fetch(`http://localhost:4000/api/v1/evaluasi/Uep/update/${data.evaluasiUEP._id}`,{
+      const res = await fetch(`http://localhost:4000/api/v1/evaluasi/Kube/update/${data.evaluasiKUBE._id}`,{
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -59,7 +61,7 @@ const EvaluasiUEP = () => {
 
       if(res.ok){
         alert('Data successfully updated!');
-        navigator('/proposal/uep');
+        navigate('/proposal/kube');
       }else{
         const resData = await res.json();
         console.log('Error updating data:', resData);
@@ -81,7 +83,7 @@ const EvaluasiUEP = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold text-gray-700 mb-6">Evaluasi Data Proposal UEP</h2>
+      <h2 className="text-2xl font-bold text-gray-700 mb-6">Evaluasi Data Proposal KUBE</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -149,4 +151,4 @@ const EvaluasiUEP = () => {
   );
 };
 
-export default EvaluasiUEP;
+export default EvaluasiKUBE;

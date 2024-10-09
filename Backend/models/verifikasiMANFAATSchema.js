@@ -11,12 +11,12 @@ const verifikasiManfaatSchema = new mongoose.Schema({
   },
   sumberDana: {
     type: String,
-    enum: ['APBN', 'APBA', 'APBK'],
+    
     required: true // User must select a funding source
   },
   status: {
     type: String,
-    enum: ['Pending', 'Approved', 'Rejected'],
+    
     default: 'pending',
     required: true // User must provide the verification status
   },
@@ -26,4 +26,4 @@ const verifikasiManfaatSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-export const VerifikasiManfaat = mongoose.model('VerifikasiManfaat', verifikasiManfaatSchema);
+export const VerifikasiManfaat = mongoose.models.VerifikasiManfaat || mongoose.model('VerifikasiManfaat', verifikasiManfaatSchema);

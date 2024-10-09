@@ -1,9 +1,11 @@
 import Breadcrumb from "../../../breadcrumb";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Manfaat = ({ breadcrumbItems = [] }) => {
+const Manfaat = ({ breadcrumbItems, data }) => {
   const [bidangBantuanList, setBidangBantuanList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     NIK: "",
     nomorHP: "",
@@ -13,7 +15,44 @@ const Manfaat = ({ breadcrumbItems = [] }) => {
     rekomendasiCamat: "",
     bidangBantuan: "",
     jenisBantuan: "",
+    verifikasiManfaat: {
+      "tahun": 0,
+      "jumlahBantuan": 0,
+      "sumberDana": "-",
+      "status": "-"
+    },
+    evaluasiManfaat: {
+      "statusBantuan": "-",
+      "namaPendamping": "-",
+      "pekerjaanPendamping": "-"
+    }
   });
+
+  useEffect(()=>{
+    if(data){
+      setFormData({
+        NIK: data.NIK || "",
+        nomorHP: data.nomorHP || "",
+        nomorAgendaPermohonan: data.nomorAgendaPermohonan || "",
+        tanggalPermohonan: data.tanggalPermohonan ? data.tanggalPermohonan.split('T')[0] : "",
+        suratKurangMampu: data.suratKurangMampu || "",
+        rekomendasiCamat: data.rekomendasiCamat || "",
+        bidangBantuan: data.bidangBantuan || "",
+        jenisBantuan: data.jenisBantuan || "",
+        verifikasiManfaat: {
+          "tahun": data.verifikasiManfaat?.tahun || 0,
+          "jumlahBantuan": data.verifikasiManfaat?.jumlahBantuan || 0,
+          "sumberDana": data.verifikasiManfaat?.sumberDana || "-",
+          "status": data.verifikasiManfaat?.status || "-"
+        },
+        evaluasiManfaat: {
+          "statusBantuan": data.evaluasiManfaat?.statusBantuan || "-",
+          "namaPendamping": data.evaluasiManfaat?.namaPendamping || "-",
+          "pekerjaanPendamping": data.evaluasiManfaat?.pekerjaanPendamping || "-"
+        }
+      })
+    }
+  },[data])
 
   useEffect(() => {
     const fetchBidangBantuan = async () => {
@@ -36,11 +75,12 @@ const Manfaat = ({ breadcrumbItems = [] }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/manfaat/submit`, {
-        method: "POST",
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/manfaat/update/${data._id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(formData),
       });
       if (response.ok) {
@@ -56,6 +96,7 @@ const Manfaat = ({ breadcrumbItems = [] }) => {
           bidangBantuan: "",
           jenisBantuan: "",
         });
+        navigate("/proposal/manfaat");
       } else {
         alert("Failed to submit form.");
       }

@@ -4,7 +4,7 @@ const evaluasiKUBESchema = new mongoose.Schema({
   statusBantuan: {
     type: String,
     required: true,
-    enum: ['Tetap', 'Berjalan', 'Hilang']
+    
   },
   namaPendamping: {
     type: String,

@@ -14,7 +14,19 @@ const UEP = ({ breadcrumbItems, ubah = false, data = [] }) => {
     rekomendasiCamat: "",
     bidangBantuan: "",
     jenisBantuan: "",
-    alamatUsaha: ""
+    alamatUsaha: "",
+    verifikasiUEP: {
+      "tahun": 0,
+      "jumlahBantuan": 0,
+      "sumberDana": "-",
+      "status": "-"
+    },
+    evaluasiUEP: {
+      "statusBantuan": "-",
+      "namaPendamping": "-",
+      "pekerjaanPendamping": "-"
+    }
+
   });
 
   const {getToken} = useAuth();
@@ -47,6 +59,7 @@ const UEP = ({ breadcrumbItems, ubah = false, data = [] }) => {
           'Authorization': `Bearer ${token}`,   
           "Content-Type": "application/json",
         },
+        credentials: 'include', 
         body: JSON.stringify(formData)
       });
 
@@ -64,9 +77,19 @@ const UEP = ({ breadcrumbItems, ubah = false, data = [] }) => {
           rekomendasiCamat: "",
           bidangBantuan: "",
           jenisBantuan: "",
-          alamatUsaha: ""
+          alamatUsaha: "",
+          verifikasiUEP: {
+            "tahun": 0,
+            "jumlahBantuan": 0,
+            "sumberDana": "-",
+            "status": "-"
+          },
+          evaluasiUEP: {
+            "statusBantuan": "-",
+            "namaPendamping": "-",
+            "pekerjaanPendamping": "-"
+          }
         });
-        alert("Data berhasil dikirim!");
       } else {
         const data = await response.json();
         console.log("Error submitting form:", data);

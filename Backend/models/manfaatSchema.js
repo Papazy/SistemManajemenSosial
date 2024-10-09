@@ -34,6 +34,14 @@ const manfaatSchema = new mongoose.Schema({
     type: String,
     required: [true, "Jenis Bantuan is required"],
   },
+  verifikasiManfaat: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'VerifikasiManfaat'
+  },
+  evaluasiManfaat: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EvaluasiManfaat'
+  }
 });
 
 export const Manfaat = mongoose.model("Manfaat", manfaatSchema);
